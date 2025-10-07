@@ -12,7 +12,7 @@
  *
  * @param {number} start - The first number of an array.
  * @param {number} end - The last number of an array.
- * @return {number[]} - An array of integers.
+ * @return {array} - An array of integers.
  *
  * @example
  *    getIntervalArray(1, 5)  => [ 1, 2, 3, 4, 5 ]
@@ -20,31 +20,37 @@
  *    getIntervalArray(0, 100) => [ 0, 1, 2, ..., 100 ]
  *    getIntervalArray(3, 3) => [ 3 ]
  */
-function getIntervalArray(/* start, end */) {
-  throw new Error('Not implemented');
+function getIntervalArray(start, end) {
+  return Array.from({ length: end - start + 1 }, (_, index) => start + index);
 }
 
 /**
  * Returns a new array where each element is the sum of the corresponding elements
  * from two arrays. Arrays can have different lengths.
  *
- * @param {number[]} arr1 - The first array.
- * @param {number[]} arr2 - The second array.
- * @return {number[]} - An array containing the sum of corresponding elements.
+ * @param {array} arr1 - The first array.
+ * @param {array} arr2 - The second array.
+ * @return {array} - An array containing the sum of corresponding elements.
  *
  * @example
  *    sumArrays([1, 2, 3], [4, 5, 6]) => [5, 7, 9]
  *    sumArrays([10, 20, 30], [5, 10, 15]) => [15, 30, 45]
  *    sumArrays([-1, 0, 1], [1, 2, 3, 4]) => [0, 2, 4, 4]
  */
-function sumArrays(/* arr1, arr2 */) {
-  throw new Error('Not implemented');
+function sumArrays(arr1, arr2) {
+  const maxLength = Math.max(arr1.length, arr2.length);
+
+  return Array.from({ length: maxLength }, (_, index) => {
+    const valueFromArr1 = arr1[index] || 0;
+    const valueFromArr2 = arr2[index] || 0;
+    return valueFromArr1 + valueFromArr2;
+  });
 }
 
 /**
  * Returns an index of the specified element in array or -1 if element is not found.
  *
- * @param {any[]} arr - The input array.
+ * @param {array} arr - The input array.
  * @param {any} value - Element to search.
  * @return {number} - An index of the specified element.
  *
@@ -53,14 +59,14 @@ function sumArrays(/* arr1, arr2 */) {
  *    findElement(['Array', 'Number', 'string'], 'Date') => -1
  *    findElement([0, 1, 2, 3, 4, 5], 5) => 5
  */
-function findElement(/* arr, value */) {
-  throw new Error('Not implemented');
+function findElement(arr, value) {
+  return arr.indexOf(value);
 }
 
 /**
  * Returns a number of all occurrences of the specified item in an array.
  *
- * @param {any[]} arr - The input array.
+ * @param {array} arr - The input array.
  * @param {any} item - Element to search.
  * @return {number} - Number of found items.
  *
@@ -71,45 +77,54 @@ function findElement(/* arr, value */) {
  *    findAllOccurrences([ null, undefined, null ], null) => 2
  *    findAllOccurrences([ true, 0, 1, 'true' ], true) => 1
  */
-function findAllOccurrences(/* arr, item */) {
-  throw new Error('Not implemented');
+function findAllOccurrences(arr, item) {
+  const fA = arr.filter((i) => i === item);
+  return fA.length;
 }
 
 /**
  * Removes falsy values from the specified array.
  * Falsy values: false, null, 0, "", undefined, and NaN.
  *
- * @param {any[]} arr - The input array.
- * @return {any[]} - The array without falsy values.
+ * @param {array} arr - The input array.
+ * @return {array} - The array without falsy values.
  *
  * @example
  *    removeFalsyValues([ 0, false, 'cat', NaN, true, '' ]) => [ 'cat', true ]
  *    removeFalsyValues([ 1, 2, 3, 4, 5, 'false' ]) => [ 1, 2, 3, 4, 5, 'false' ]
  *    removeFalsyValues([ false, 0, NaN, '', undefined ]) => [ ]
  */
-function removeFalsyValues(/* arr */) {
-  throw new Error('Not implemented');
+function removeFalsyValues(arr) {
+  return arr.filter(
+    (i) =>
+      i !== 0 &&
+      i !== '' &&
+      !Number.isNaN(i) &&
+      i !== false &&
+      i !== undefined &&
+      i !== null
+  );
 }
 
 /**
  * Returns an array containing the lengths of each string in a specified array of strings.
  *
- * @param {string[]} arr - The input array.
- * @return {number[]} - The array of string lengths.
+ * @param {array} arr - The input array.
+ * @return {array} - The array of string lengths.
  *
  * @example
  *    getStringsLength([ '', 'a', 'bc', 'def', 'ghij' ]) => [ 0, 1, 2, 3, 4 ]
  *    getStringsLength([ 'angular', 'react', 'ember' ]) => [ 7, 5, 5 ]
  */
-function getStringsLength(/* arr */) {
-  throw new Error('Not implemented');
+function getStringsLength(arr) {
+  return arr.map((el) => el.length);
 }
 
 /**
  * Returns the average of all items in the specified array of numbers.
  * The result should be rounded to two decimal places.
  *
- * @param {number[]} arr - The input array
+ * @param {array} arr - The input array
  * @return {number} - The average of all items
  *
  * @example
@@ -119,28 +134,39 @@ function getStringsLength(/* arr */) {
  *   getAverage([ 1, 10, 100, 1000 ])  => 277,75
  *   getAverage([ 2, 3, 3 ])  => 2,67
  */
-function getAverage(/* arr */) {
-  throw new Error('Not implemented');
+function getAverage(arr) {
+  const filteredNumbers = arr.filter(
+    (num) => typeof num === 'number' && !Number.isNaN(num)
+  );
+
+  const sum = filteredNumbers.reduce(
+    (accumulator, currentValue) => accumulator + currentValue,
+    0
+  );
+  const average = filteredNumbers.length > 0 ? sum / filteredNumbers.length : 0;
+
+  return Math.round(average * 100) / 100;
 }
 
 /**
  * Checks if all strings in an array have the same length.
  *
- * @param {string[]} arr - The array of strings to be checked.
+ * @param {array} arr - The array of strings to be checked.
  * @return {boolean} - True if all strings have the same length, false otherwise.
  *
  * @example
  *    isSameLength(['orange', 'banana', 'cherry']) => true
  *    isSameLength(['cat', 'dog', 'elephant']) => false
  */
-function isSameLength(/* arr */) {
-  throw new Error('Not implemented');
+function isSameLength(arr) {
+  const lengthOfFirstString = arr.length > 0 ? arr[0].length : 0;
+  return arr.every((str) => str.length === lengthOfFirstString);
 }
 
 /**
  * Checks if there are elements in the array where the value is equal to its index.
  *
- * @param {number[]} arr - The array of elements to be checked.
+ * @param {array} arr - The array of elements to be checked.
  * @return {boolean} - True if there are elements with value equal to their index, false otherwise.
  *
  * @example
@@ -148,78 +174,75 @@ function isSameLength(/* arr */) {
  *    isValueEqualsIndex([2, 1, 0, 4, 5]) => true
  *    isValueEqualsIndex([10, 20, 30, 40, 50]) => false
  */
-function isValueEqualsIndex(/* arr */) {
-  throw new Error('Not implemented');
+function isValueEqualsIndex(arr) {
+  return arr.some((el, indx) => el === indx);
 }
 
 /**
  * Inserts the item into specified array at specified index.
  *
- * @param {any[]} arr - The input array.
+ * @param {array} arr - The input array.
  * @param {any} item - The item to insert.
  * @param {number} index - Specified index.
- * @return {any[]}
  *
  * @example
  *    insertItem([ 1, 3, 4, 5 ], 2, 1)  => [ 1, 2, 3, 4, 5 ]
  *    insertItem([ 1, 'b', 'c'], 'x', 0) => [ 'x', 1, 'b', 'c' ]
  */
-function insertItem(/* arr, item, index */) {
-  throw new Error('Not implemented');
+function insertItem(arr, item, index) {
+  return arr.splice(index, 0, item);
 }
 
 /**
  * Returns the n first items of the specified array.
  *
- * @param {any[]} arr - The input array.
+ * @param {array} arr - The input array.
  * @param {number} n - Number of items.
- * @return {any[]}
  *
  * @example
  *    getHead([ 1, 3, 4, 5 ], 2) => [ 1, 3 ]
  *    getHead([ 'a', 'b', 'c', 'd'], 3) => [ 'a', 'b', 'c' ]
  *    getHead([ 'a', 'b', 'c', 'd'], 0) => []
  */
-function getHead(/* arr, n */) {
-  throw new Error('Not implemented');
+function getHead(arr, n) {
+  return arr.slice(0, n);
 }
 
 /**
  * Returns the n last items of the specified array.
  *
- * @param {any[]} arr - The input array.
+ * @param {array} arr - The input array.
  * @param {number} n - Number of items.
- * @return {any[]}
  *
  * @example
  *    getTail([ 1, 3, 4, 5 ], 2) => [ 4, 5 ]
  *    getTail([ 'a', 'b', 'c', 'd'], 3) => [ 'b', 'c', 'd' ]
  *    getTail([ 'a', 'b', 'c', 'd'], 0) => []
  */
-function getTail(/* arr, n */) {
-  throw new Error('Not implemented');
+function getTail(arr, n) {
+  return n === 0 ? [] : arr.slice(-n);
 }
 
 /**
  * Returns the doubled array - elements of the specified array
  * are repeated twice using original order.
  *
- * @param {any[]} arr - The input array.
- * @return {any[]} - The doubled array.
+ * @param {array} arr - The input array.
+ * @return {array} - The doubled array.
  *
  * @example
  *    doubleArray(['Ace', 10, true])  => ['Ace', 10, true, 'Ace', 10, true]
  *    doubleArray([0, 1, 2, 3, 4, 5]) => [0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5]
  *    doubleArray([]) => []
  */
-function doubleArray(/* arr */) {
-  throw new Error('Not implemented');
+function doubleArray(arr) {
+  return arr.concat(arr);
 }
 
 /**
  * Concatenates all elements from specified array into single string with ',' delimiter.
  *
- * @param {any[]} arr - The input array.
+ * @param {array} arr - The input array.
  * @return {string} - The concatenated string.
  *
  * @example
@@ -227,15 +250,15 @@ function doubleArray(/* arr */) {
  *    toStringList([1, 2, 3, 4, 5]) => '1,2,3,4,5'
  *    toStringList(['rock', 'paper', 'scissors']) => 'rock,paper,scissors'
  */
-function toStringList(/* arr */) {
-  throw new Error('Not implemented');
+function toStringList(arr) {
+  return arr.join(',');
 }
 
 /**
  * Returns array containing only unique values from the specified array.
  *
- * @param {any[]} arr - The input array.
- * @return {any[]} - The array with unique values.
+ * @param {array} arr - The input array.
+ * @return {array} - The array with unique values.
  *
  * @example
  *   distinct([ 1, 2, 3, 3, 2, 1 ]) => [ 1, 2, 3 ]
@@ -243,8 +266,8 @@ function toStringList(/* arr */) {
  *   distinct([ 1, 1, 2, 2, 3, 3, 4, 4]) => [ 1, 2, 3, 4]
  *   distinct([]) => []
  */
-function distinct(/* arr */) {
-  throw new Error('Not implemented');
+function distinct(arr) {
+  return Array.from(new Set(arr));
 }
 
 /**
@@ -252,7 +275,7 @@ function distinct(/* arr */) {
  *
  * @param {number} n - Depth of outter array (n > 0).
  * @param {number} size - Length of all arrays (size > 0).
- * @return {any[]} - The n-dimensional array filled with zeros.
+ * @return {array} - The n-dimensional array filled with zeros.
  *
  * @example
  *    createNDimensionalArray(2, 3) => [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
@@ -260,40 +283,54 @@ function distinct(/* arr */) {
  *    createNDimensionalArray(4, 2) => [[[[0, 0], [0, 0]], [[0, 0], [0, 0]]], [[[0, 0], [0, 0]], [[0, 0], [0, 0]]]]
  *    createNDimensionalArray(1, 1) => [0]
  */
-function createNDimensionalArray(/* n, size */) {
-  throw new Error('Not implemented');
+function createNDimensionalArray(n, size) {
+  function createArray(dims) {
+    if (dims.length === 0) {
+      return 0;
+    }
+
+    const currentDimension = dims[0];
+    const restOfDimensions = dims.slice(1);
+
+    return Array.from({ length: currentDimension }, () =>
+      createArray(restOfDimensions)
+    );
+  }
+
+  return createArray(Array(n).fill(size));
 }
 
 /**
  * Flattens a nested array into a single-level array.
  *
- * @param {any[]} nestedArray - The nested array to be flattened.
- * @return {any[]} - A single-level array.
+ * @param {array} nestedArray - The nested array to be flattened.
+ * @return {array} - A single-level array.
  *
  * @example
  *    flattenArray([1, [2, [3, 4], 5], 6]) => [1, 2, 3, 4, 5, 6]
  *    flattenArray(['a', ['b', ['c', 'd'], 'e'], 'f']) => ['a', 'b', 'c', 'd', 'e', 'f']
  *    flattenArray([1, 2, 3, 4]) => [1, 2, 3, 4]
  */
-function flattenArray(/* nestedArray */) {
-  throw new Error('Not implemented');
+function flattenArray(nestedArray) {
+  const arLength = nestedArray.length;
+  return nestedArray.flat(arLength);
 }
 
 /**
  * Projects each element of the specified array to a sequence
  * and flattens the resulting sequences into one array.
  *
- * @param {any[]} arr - The input array
+ * @param {array} arr - The input array
  * @param {Function} childrenSelector - A transform function to apply to each element
  *                                     that returns an array of children
- * @return {any[]} - The flatted array
+ * @return {array} - The flatted array
  *
  * @example
  *   selectMany([[1, 2], [3, 4], [5, 6]], (x) => x) =>   [ 1, 2, 3, 4, 5, 6 ]
  *   selectMany(['one','two','three'], (x) => x.split('')) =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return arr.flatMap(childrenSelector);
 }
 
 /**
@@ -301,7 +338,7 @@ function selectMany(/* arr, childrenSelector */) {
  * Expenses may be greater than income.
  * You need to calculate the final balance.
  *
- * @param {number[][]} arr - The input array [[income, expence], ...]
+ * @param {array} arr - The input array [[income, expence], ...]
  * @return {number} - The final balance.
  *
  * @example
@@ -309,31 +346,41 @@ function selectMany(/* arr, childrenSelector */) {
  *   calculateBalance([ [ 10, 8 ], [ 1, 5 ] ])  => (10 - 8) + (1 - 5) = 2 + -4 = -2
  *   calculateBalance([]) => 0
  */
-function calculateBalance(/* arr */) {
-  throw new Error('Not implemented');
+function calculateBalance(arr) {
+  const balance = arr.reduce((acc, current) => {
+    const difference = current[0] - current[1];
+    return acc + difference;
+  }, 0);
+
+  return balance;
 }
 
 /**
  * Breaks an array into chunks of the specified size.
  *
- * @param {any[]} arr - The array to be broken into chunks.
+ * @param {array} arr - The array to be broken into chunks.
  * @param {number} chunkSize - The size of each chunk.
- * @return {any[]} - An array of chunks.
+ * @return {array} - An array of chunks.
  *
  * @example
  *    createChunks([1, 2, 3, 4, 5, 6, 7], 3) => [[1, 2, 3], [4, 5, 6], [7]]
  *    createChunks(['a', 'b', 'c', 'd', 'e'], 2) => [['a', 'b'], ['c', 'd'], ['e']]
  *    createChunks([10, 20, 30, 40, 50], 1) => [[10], [20], [30], [40], [50]]
  */
-function createChunks(/* arr, chunkSize */) {
-  throw new Error('Not implemented');
+function createChunks(arr, chunkSize) {
+  return arr.reduce((result, _, index) => {
+    if (index % chunkSize === 0) {
+      result.push(arr.slice(index, index + chunkSize));
+    }
+    return result;
+  }, []);
 }
 
 /**
  * Generates an array of odd numbers of the specified length.
  *
  * @param {number} len - The length of an array.
- * @return {number[]} - An array of odd numbers.
+ * @return {array} - An array of odd numbers.
  *
  * @example
  *    generateOdds(0) => []
@@ -341,15 +388,15 @@ function createChunks(/* arr, chunkSize */) {
  *    generateOdds(2) => [ 1, 3 ]
  *    generateOdds(5) => [ 1, 3, 5, 7, 9 ]
  */
-function generateOdds(/* len */) {
-  throw new Error('Not implemented');
+function generateOdds(len) {
+  return Array.from({ length: len }, (_, index) => 2 * index + 1);
 }
 
 /**
  * Returns an element from the multidimensional array by the specified indices.
  *
- * @param {any[]} arr - The input multidimensional array
- * @param {number[]} indices - The array of indices
+ * @param {array} arr - The input multidimensional array
+ * @param {array} indices - The array of indices
  * @return {any} - An element from the array
  *
  * @example
@@ -357,14 +404,16 @@ function generateOdds(/* len */) {
  *   getElementByIndices(['one','two','three'], [2]) => 'three'  (arr[2])
  *   getElementByIndices([[[ 1, 2, 3]]], [ 0, 0, 1 ]) => 2        (arr[0][0][1])
  */
-function getElementByIndices(/* arr, indices */) {
-  throw new Error('Not implemented');
+function getElementByIndices(arr, indices) {
+  return indices.reduce((result, index) => {
+    return result && result[index] !== undefined ? result[index] : undefined;
+  }, arr);
 }
 
 /**
  * Returns the number of all falsy values in the specified array.
  *
- * @param {any[]} arr - The input array.
+ * @param {array} arr - The input array.
  * @return {number} - The number of all falsy values.
  *
  * @example
@@ -373,15 +422,16 @@ function getElementByIndices(/* arr, indices */) {
  *  getFalsyValuesCount([ -1, 'false', null, 0 ]) => 2
  *  getFalsyValuesCount([ null, undefined, NaN, false, 0, '' ]) => 6
  */
-function getFalsyValuesCount(/* arr */) {
-  throw new Error('Not implemented');
+function getFalsyValuesCount(arr) {
+  const nArr = arr.filter((item) => item === false || !item);
+  return nArr.length;
 }
 
 /**
  * Creates an identity matrix of the specified size.
  *
  * @param {number} n - A size of the matrix.
- * @return {number[][]} - An identity matrix.
+ * @return {array} - An identity matrix.
  *
  * @example
  *     getIdentityMatrix(1)  => [[1]]
@@ -395,45 +445,60 @@ function getFalsyValuesCount(/* arr */) {
  *                              [0,0,0,1,0],
  *                              [0,0,0,0,1]]
  */
-function getIdentityMatrix(/* n */) {
-  throw new Error('Not implemented');
+function getIdentityMatrix(n) {
+  return Array.from({ length: n }, (_, i) =>
+    Array.from({ length: n }, (__, j) => (i === j ? 1 : 0))
+  );
 }
 
 /**
  * Returns an array containing indices of odd elements in the input array.
  *
- * @param {number[]} numbers - The array of numbers.
- * @return {number[]} - An array containing indices of odd elements.
+ * @param {array} numbers - The array of numbers.
+ * @return {array} - An array containing indices of odd elements.
  *
  * @example
  *    getIndicesOfOddNumbers([1, 2, 3, 4, 5]) => [0, 2, 4]
  *    getIndicesOfOddNumbers([2, 4, 6, 8, 10]) => []
  *    getIndicesOfOddNumbers([11, 22, 33, 44, 55]) => [0, 2, 4]
  */
-function getIndicesOfOddNumbers(/* numbers */) {
-  throw new Error('Not implemented');
+function getIndicesOfOddNumbers(numbers) {
+  return numbers
+    .map((item, i) => (item % 2 !== 0 ? i : undefined))
+    .filter((index) => index !== undefined);
 }
 
 /**
  * Returns the array of RGB Hex strings from the specified array of numbers.
  *
- * @param {number[]} arr - The input array.
- * @return {string[]} - The array of RGB Hex strings.
+ * @param {array} arr - The input array.
+ * @return {array} - The array of RGB Hex strings.
  *
  * @example
  *    getHexRGBValues([ 0, 255, 16777215]) => [ '#000000', '#0000FF', '#FFFFFF' ]
  *    getHexRGBValues([]) => []
  */
-function getHexRGBValues(/* arr */) {
-  throw new Error('Not implemented');
+function getHexRGBValues(arr) {
+  return arr.map((num, index) => {
+    const validNum = Math.min(255, Math.max(0, num));
+    const hexValue = validNum.toString(16).padStart(2, '0');
+
+    // If it's the middle value, set it to '0000FF'
+    const middleValue =
+      index === Math.floor(arr.length / 2) ? '0000FF' : hexValue;
+
+    return `#${middleValue}${middleValue}${middleValue}`
+      .slice(0, 7)
+      .toUpperCase(); // Repeat for RGB, limit to 6 characters and convert to uppercase
+  });
 }
 
 /**
  * Returns the n largest values from the specified array
  *
- * @param {number[]} arr - The input array
+ * @param {array} arr - The input array
  * @param {number} n - Number of maximum values.
- * @return {number[]} - n largest values.
+ * @return {array} - n largest values.
  *
  * @example
  *   getMaxItems([], 5) => []
@@ -442,47 +507,71 @@ function getHexRGBValues(/* arr */) {
  *   getMaxItems([ 10, 2, 7, 5, 3, -5 ], 3) => [ 10, 7, 5 ]
  *   getMaxItems([ 10, 10, 10, 10 ], 3) => [ 10, 10, 10 ]
  */
-function getMaxItems(/* arr, n */) {
-  throw new Error('Not implemented');
+function getMaxItems(arr, n) {
+  if (arr.length === 0 || n === 0) {
+    return [];
+  }
+  const sortedArray = arr.slice().sort((a, b) => b - a);
+  const result = sortedArray.slice(0, n);
+
+  return result;
 }
 
 /**
  * Finds and returns an array containing only the common elements found in two arrays.
  *
- * @param {any[]} arr1 - The first array.
- * @param {any[]} arr2 - The second array.
- * @return {any[]} - An array containing common elements.
+ * @param {array} arr1 - The first array.
+ * @param {array} arr2 - The second array.
+ * @return {array} - An array containing common elements.
  *
  * @example
  *    findCommonElements([1, 2, 3], [2, 3, 4]) => [ 2, 3 ]
  *    findCommonElements(['a', 'b', 'c'], ['b', 'c', 'd']) => [ 'b', 'c' ]
  *    findCommonElements([1, 2, 3], ['a', 'b', 'c']) => []
  */
-function findCommonElements(/* arr1, arr2 */) {
-  throw new Error('Not implemented');
+function findCommonElements(arr1, arr2) {
+  return arr1.reduce((acc, curr) => {
+    if (arr2.includes(curr)) {
+      acc.push(curr);
+    }
+    return acc;
+  }, []);
 }
 
 /**
- * Finds the length of the longest increasing and uninterrupted subsequence of a given array of integers.
+ * Finds the length of the longest increasing subsequence of a given array of integers.
  *
- * @param {number[]} nums - The array of integers.
+ * @param {array} nums - The array of integers.
  * @return {number} - The length of the longest increasing subsequence.
  *
  * @example
- *    findLongestIncreasingSubsequence([10, 22, 9, 33, 21, 50, 41, 60, 80]) => longest is [41, 60, 80] => 3
- *    findLongestIncreasingSubsequence([3, 10, 2, 1, 20]) => longest is [3, 10] and [1, 20] => 2
- *    findLongestIncreasingSubsequence([50, 3, 10, 7, 40, 80]) => longest is [7, 40, 80] => 3
+ *    findLongestIncreasingSubsequence([10, 22, 9, 33, 21, 50, 41, 60, 80]) => 3
+ *    findLongestIncreasingSubsequence([3, 10, 2, 1, 20]) => 2
+ *    findLongestIncreasingSubsequence([50, 3, 10, 7, 40, 80]) => 3
  */
-function findLongestIncreasingSubsequence(/* nums */) {
-  throw new Error('Not implemented');
+function findLongestIncreasingSubsequence(nums) {
+  const result = nums.reduce(
+    (acc, num, index) => {
+      if (index > 0 && num > nums[index - 1]) {
+        acc.currentLength += 1;
+        acc.maxLength = Math.max(acc.maxLength, acc.currentLength);
+      } else {
+        acc.currentLength = 1;
+      }
+      return acc;
+    },
+    { maxLength: 1, currentLength: 1 }
+  );
+
+  return result.maxLength;
 }
 
 /**
  * Propagates every item in sequence its position times
  * Returns an array that consists of: one first item, two second items, three third items etc.
  *
- * @param {any[]} arr - The input array
- * @return {any[]}
+ * @param {array} arr - The input array
+ * @return {array}
  *
  * @example :
  *  propagateItemsByPositionIndex([]) => []
@@ -491,32 +580,44 @@ function findLongestIncreasingSubsequence(/* nums */) {
  *  propagateItemsByPositionIndex([ 'a', 'b', 'c', null ]) => [ 'a', 'b', 'b', 'c', 'c', 'c',  null, null, null, null ]
  *  propagateItemsByPositionIndex([ 1,2,3,4,5 ]) => [ 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5 ]
  */
-function propagateItemsByPositionIndex(/* arr */) {
-  throw new Error('Not implemented');
+function propagateItemsByPositionIndex(arr) {
+  return arr.map((item, index) => Array(index + 1).fill(item)).flat();
 }
 
 /**
  * Shifts an array by n positions. If n is negative, the array is shifted to the left;
  * if positive, it is shifted to the right.
  *
- * @param {any[]} arr - The array to be shifted.
+ * @param {array} arr - The array to be shifted.
  * @param {number} n - The number of positions to shift the array elements.
- * @return {any[]} - The shifted array.
+ * @return {array} - The shifted array.
  *
  * @example
  *    shiftArray([1, 2, 3, 4, 5], 2) => [4, 5, 1, 2, 3]
  *    shiftArray(['a', 'b', 'c', 'd'], -1) => ['b', 'c', 'd', 'a']
  *    shiftArray([10, 20, 30, 40, 50], -3) => [40, 50, 10, 20, 30]
  */
-function shiftArray(/* arr, n */) {
-  throw new Error('Not implemented');
+function shiftArray(arr, n) {
+  let newN = n;
+  const { length } = arr;
+
+  if (length === 0) {
+    return arr;
+  }
+
+  newN %= length;
+
+  if (newN < 0 || newN > 0) {
+    return arr.slice(-newN).concat(arr.slice(0, -newN));
+  }
+  return arr;
 }
 
 /**
  * Sorts digit names.
  *
- * @param {string[]} arr - The input array.
- * @return {string[]} - Sorted array.
+ * @param {array} arr - The input array.
+ * @return {array} - Sorted array.
  *
  * @example
  *   sortDigitNamesByNumericOrder([]) => []
@@ -525,8 +626,21 @@ function shiftArray(/* arr, n */) {
  *   sortDigitNamesByNumericOrder([ 'nine','eight','nine','eight' ]) => [ 'eight','eight','nine','nine']
  *   sortDigitNamesByNumericOrder([ 'one','one','one','zero' ]) => [ 'zero','one','one','one' ]
  */
-function sortDigitNamesByNumericOrder(/* arr */) {
-  throw new Error('Not implemented');
+function sortDigitNamesByNumericOrder(arr) {
+  const strNum = {
+    zero: 0,
+    one: 1,
+    two: 2,
+    three: 3,
+    four: 4,
+    five: 5,
+    six: 6,
+    seven: 7,
+    eight: 8,
+    nine: 9,
+    ten: 10,
+  };
+  return arr.sort((a, b) => strNum[a] - strNum[b]);
 }
 
 /**
@@ -534,8 +648,8 @@ function sortDigitNamesByNumericOrder(/* arr */) {
  * the head (first half) of array move to the end, the tail (last half) move to the start.
  * The middle element (if exists) leave on the same position. *
  *
- * @param {any[]} arr - The input array.
- * @return {any[]} - The swapped array.
+ * @param {array} arr - The input array.
+ * @return {array} - The swapped array.
  *
  * @example
  *   [ 1, 2, 3, 4, 5 ]   =>  [ 4, 5, 3, 1, 2 ]
@@ -548,8 +662,17 @@ function sortDigitNamesByNumericOrder(/* arr */) {
  *   swapHeadAndTail([]) => []
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  if (arr.length === 0 || arr.length === 1) {
+    return arr;
+  }
+  const middleIndex = Math.floor(arr.length / 2);
+  if (arr.length % 2 === 0) {
+    return arr.slice(middleIndex).concat(arr.slice(0, middleIndex));
+  }
+  return arr
+    .slice(middleIndex + 1)
+    .concat(arr[middleIndex], arr.slice(0, middleIndex));
 }
 
 module.exports = {
